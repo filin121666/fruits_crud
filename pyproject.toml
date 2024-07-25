@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "python-code"
+name = "fruits-api"
 version = "1.0"
 description = "An application that implements CRUD operations on fruits"
 authors = ["filin121666"]
