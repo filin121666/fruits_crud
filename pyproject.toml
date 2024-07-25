@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "python-code"
+version = "1.0"
+description = "An application that implements CRUD operations on fruits"
+authors = ["filin121666"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.111.0"
+uvicorn = {extras = ["standard"], version = "^0.30.1"}
+pydantic = "^2.7.4"
+pydantic-settings = "^2.3.3"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.31"}
+alembic = "^1.13.1"
+asyncpg = "^0.29.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
