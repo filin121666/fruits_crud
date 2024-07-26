@@ -23,6 +23,7 @@ app = FastAPI(
     title="Fruits application",
     description="An application that implements CRUD operations on fruits",
     version="1.0",
+    debug=False,
 )
 
 
@@ -37,4 +38,5 @@ if __name__ == "__main__":
         host=settings.run.host,
         port=settings.run.port,
         reload=True,
+        log_level="info",  # если продакшн, то поменять на log_level="error"
     )
