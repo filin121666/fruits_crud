@@ -24,6 +24,18 @@ async def get_all_fruits(
     return fruits
 
 
+@router.get("/get_first/", response_model=list[FruitRead], status_code=200)
+async def get_first_fruits(
+    session: Annotated[
+        AsyncSession,
+        Depends(database.session_getter),
+    ],
+    count: int,
+):
+    fruits = await fruits_crud.get_first_fruits(session=session, count=count)
+    return fruits
+
+
 @router.get("/{fruit_id}/", response_model=FruitRead, status_code=200)
 async def get_one_fruit(
     session: Annotated[

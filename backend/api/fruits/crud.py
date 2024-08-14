@@ -8,8 +8,8 @@ from core.models import FruitModel
 
 async def get_all_fruits(session: AsyncSession) -> list[FruitModel]:
     query = select(FruitModel)
-    result = await session.scalars(query)
-    result = list(result.all())
+    result = await session.execute(query)
+    result = list(result.scalars().all())
     if result:
         return result
     # Фрукты не найдены
@@ -27,6 +27,20 @@ async def get_one_fruit(
             status_code=404, detail="Not found, an incorrect id may have been entered"
         )
     return fruit
+
+
+async def get_first_fruits(
+    session: AsyncSession,
+    count: int,
+) -> list[FruitModel]:
+    query = select(FruitModel).limit(count)
+    result = await session.execute(query)
+    result = list(result.scalars().all())
+    if result:
+        print(result)
+        return result
+    # Фрукты не найдены
+    raise HTTPException(status_code=404, detail="No fruit found")
 
 
 async def create_fruit(
