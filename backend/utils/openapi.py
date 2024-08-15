@@ -6,7 +6,6 @@ def custom_openapi(app: FastAPI):
     openapi_schema = get_openapi(
         title=app.title,
         version=app.version,
-        openapi_version="3.0.2",
         description=app.description,
         routes=app.routes,
     )
