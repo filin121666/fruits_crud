@@ -5,14 +5,30 @@ from pathlib import Path
 
 
 class RunConfig(BaseModel):
-
     host: str
     port: int
+    log_level: str
+    reload: bool = False
+    workers: int
 
 
 class ApiPrefix(BaseModel):
-    prefix: str = "/api"
+    api_prefix: str = "/api"
     fruits_prefix: str = "/fruits"
+
+
+class ApiConfig(BaseModel):
+    prefix: ApiPrefix = ApiPrefix()
+    create_custom_doc_urls: bool = True
+    version: str = "1.1.0"
+    title: str = "Fruits CRUD"
+    description: str = "Is an application that implements CRUD (create, read, update, delete) operations on fruits"
+
+
+class CDNConfig(BaseModel):
+    swagger_js_url: str = "https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"
+    swagger_css_url: str = "https://unpkg.com/swagger-ui-dist@5/swagger-ui.css"
+    redoc_js_url: str = "https://unpkg.com/redoc@next/bundles/redoc.standalone.js"
 
 
 class DatabaseConfig(BaseModel):
@@ -50,9 +66,9 @@ class Settings(BaseSettings):
         env_prefix="APP_CONFIG__",
     )
 
-    # run: RunConfig = RunConfig()
     run: RunConfig
-    api_prefix: ApiPrefix = ApiPrefix()
+    api: ApiConfig
+    cdn: CDNConfig = CDNConfig()
     database: DatabaseConfig
 
 

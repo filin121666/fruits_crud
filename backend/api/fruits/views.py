@@ -3,12 +3,22 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from . import crud as fruits_crud
-from .schemas import FruitRead, FruitCreate, FruitDelete, FruitUpdate
+from .schemas import (
+    FruitRead,
+    FruitCreate,
+    FruitDeleteById,
+    FruitFullUpdateById,
+    FruitSearch,
+    FruitFullUpdateByTitle,
+    FruitDeleteByTitle,
+    FruitPartialUpdateByTitle,
+    FruitPartialUpdateById,
+)
 from core.config import settings
 from core.database import database
 
 router = APIRouter(
-    prefix=settings.api_prefix.fruits_prefix,
+    prefix=settings.api.prefix.fruits_prefix,
     tags=["Fruits"],
 )
 
@@ -36,16 +46,28 @@ async def get_first_fruits(
     return fruits
 
 
-@router.get("/{fruit_id}/", response_model=FruitRead, status_code=200)
-async def get_one_fruit(
+@router.get("/{fruit_id:int}/", response_model=FruitRead, status_code=200)
+async def get_fruit_by_id(
     session: Annotated[
         AsyncSession,
         Depends(database.session_getter),
     ],
     fruit_id: int,
 ):
-    fruit = await fruits_crud.get_one_fruit(session=session, fruit_id=fruit_id)
+    fruit = await fruits_crud.get_fruit_by_id(session=session, fruit_id=fruit_id)
     return fruit
+
+
+@router.get("/search/", response_model=list[FruitRead], status_code=200)
+async def get_fruits_by_title(
+    session: Annotated[
+        AsyncSession,
+        Depends(database.session_getter),
+    ],
+    fruits_title: FruitSearch,
+):
+    fruits = await fruits_crud.get_fruits_by_title(session=session, title=fruits_title)
+    return fruits
 
 
 @router.post("/", response_model=FruitRead, status_code=201)
@@ -61,24 +83,72 @@ async def create_fruit(
 
 
 @router.put("/", response_model=FruitRead, status_code=200)
-async def update_fruit(
+async def full_update_fruit_by_id(
     session: Annotated[
         AsyncSession,
         Depends(database.session_getter),
     ],
-    fruit_update: FruitUpdate,
+    fruit_update: FruitFullUpdateById,
 ):
-    fruit = await fruits_crud.update_fruit(session=session, fruit_update=fruit_update)
+    fruit = await fruits_crud.full_update_fruit_by_id(session=session, fruit_update=fruit_update)
     return fruit
 
 
 @router.delete("/", response_model=FruitRead, status_code=200)
-async def delete_fruit(
+async def delete_fruit_by_id(
     session: Annotated[
         AsyncSession,
         Depends(database.session_getter),
     ],
-    fruit_delete: FruitDelete,
+    fruit_delete: FruitDeleteById,
 ):
-    fruit = await fruits_crud.delete_fruit(session=session, fruit_delete=fruit_delete)
+    fruit = await fruits_crud.delete_fruit_by_id(session=session, fruit_delete=fruit_delete)
+    return fruit
+
+
+@router.put("/by_title/", response_model=FruitRead, status_code=200)
+async def full_update_fruit_by_title(
+    session: Annotated[
+        AsyncSession,
+        Depends(database.session_getter),
+    ],
+    fruit_update: FruitFullUpdateByTitle,
+):
+    fruit = await fruits_crud.full_update_fruit_by_title(session=session, fruit_update=fruit_update)
+    return fruit
+
+
+@router.delete("/by_title/", response_model=FruitRead, status_code=200)
+async def delete_fruit_by_title(
+    session: Annotated[
+        AsyncSession,
+        Depends(database.session_getter),
+    ],
+    fruit_delete: FruitDeleteByTitle,
+):
+    fruit = await fruits_crud.delete_fruit_by_title(session=session, fruit_delete=fruit_delete)
+    return fruit
+
+
+@router.patch("/by_title/", response_model=FruitRead, status_code=200)
+async def partial_update_by_title(
+    session: Annotated[
+        AsyncSession,
+        Depends(database.session_getter),
+    ],
+    fruit_update: FruitPartialUpdateByTitle,
+):
+    fruit = await fruits_crud.partial_update_fruit_by_title(session=session, fruit_update=fruit_update)
+    return fruit
+
+
+@router.patch("/", response_model=FruitRead, status_code=200)
+async def partial_update_by_id(
+    session: Annotated[
+        AsyncSession,
+        Depends(database.session_getter),
+    ],
+    fruit_update: FruitPartialUpdateById,
+):
+    fruit = await fruits_crud.partial_update_fruit_by_id(session=session, fruit_update=fruit_update)
     return fruit
