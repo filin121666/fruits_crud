@@ -19,7 +19,7 @@ class ApiPrefix(BaseModel):
 class ApiConfig(BaseModel):
     prefix: ApiPrefix = ApiPrefix()
     create_custom_doc_urls: bool = True
-    version: str = "1.1.0"
+    version: str = "1.1.1"
     title: str = "Fruits CRUD"
     description: str = "Is an application that implements CRUD (create, read, update, delete) operations on fruits"
 
