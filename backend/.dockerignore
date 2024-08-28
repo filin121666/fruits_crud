@@ -1,0 +1,5 @@
+.env.example
+__pycache__
+README.md
+pyproject.toml
+poetry.lock
