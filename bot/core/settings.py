@@ -15,7 +15,7 @@ class BotConfig(BaseModel):
 
 
 class LoggingConfig(BaseModel):
-    log_level: int = logging.ERROR
+    log_level: int = logging.INFO
 
 
 class Settings(BaseSettings):
