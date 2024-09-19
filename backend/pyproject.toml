@@ -6,7 +6,7 @@ authors = ["filin121666"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">3.10"
+python = ">3.10,<4.0"
 fastapi = "^0.112.2"
 uvicorn = {extras = ["standart"], version = "^0.30.6"}
 pydantic = "^2.8.2"
@@ -15,6 +15,7 @@ sqlalchemy = {extras = ["asyncio"], version = "^2.0.32"}
 alembic = "^1.13.2"
 asyncpg = "^0.29.0"
 orjson = "^3.10.7"
+redis = "^5.0.8"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -8,6 +8,7 @@ from fastapi.openapi.docs import (
     get_swagger_ui_oauth2_redirect_html,
 )
 from core.config import settings
+from fastapi.middleware.gzip import GZipMiddleware
 
 
 @asynccontextmanager
@@ -45,9 +46,7 @@ def register_custom_doc_urls(app: FastAPI):
         )
 
 
-def create_app(
-    create_custom_doc_urls: bool = False
-) -> FastAPI:
+def create_app() -> FastAPI:
     app = FastAPI(
         default_response_class=ORJSONResponse,
         lifespan=lifespan,
@@ -55,11 +54,18 @@ def create_app(
         description=settings.api.description,
         version=settings.api.version,
         debug=False,
-        docs_url=None if create_custom_doc_urls else "/docs",
-        redoc_url=None if create_custom_doc_urls else "/redoc",
+        docs_url=None if settings.api.create_custom_doc_urls else "/docs",
+        redoc_url=None if settings.api.create_custom_doc_urls else "/redoc",
     )
     
-    if create_custom_doc_urls:
+    if settings.api.create_custom_doc_urls:
         register_custom_doc_urls(app=app)
+
+    if settings.api.use_gzip:
+        app.add_middleware(
+            GZipMiddleware,
+            minimum_size=1500,
+            compresslevel=6,
+        )
 
     return app

@@ -19,9 +19,16 @@ class ApiPrefix(BaseModel):
 class ApiConfig(BaseModel):
     prefix: ApiPrefix = ApiPrefix()
     create_custom_doc_urls: bool = True
+    use_gzip: bool
     version: str = "1.1.2"
     title: str = "Fruits CRUD"
-    description: str = "Is an application that implements CRUD (create, read, update, delete) operations on fruits"
+    description: str = """
+Is an application that implements CRUD (create, read, update, delete) operations on fruits.
+
+Useful information:
+- If the response size exceeds 1500 bytes, the data is compressed using GZIP;
+- When performing partial update operations, if you want to leave the field unchanged, then leave the field value set to false. 
+"""
 
 
 class CDNConfig(BaseModel):
@@ -55,6 +62,16 @@ class DatabaseConfig(BaseModel):
         return f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
 
 
+class CacheConfig(BaseModel):
+    host: str
+    port: int
+    exp_seconds: int
+
+    @property
+    def get_url(self) -> str:
+        return f"redis://{self.host}:{self.port}"
+
+
 class Settings(BaseSettings):
     BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
@@ -69,6 +86,7 @@ class Settings(BaseSettings):
     api: ApiConfig
     cdn: CDNConfig = CDNConfig()
     database: DatabaseConfig
+    cache: CacheConfig
 
 
 settings = Settings()

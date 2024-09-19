@@ -47,6 +47,7 @@ class FruitFullUpdateById(FruitFullUpdateBase):
             value = int(value)
         except ValueError:
             raise HTTPException(status_code=400, detail="The <id> field should be a integer")
+        return value
 
 
 class FruitFullUpdateByTitle(FruitFullUpdateBase):
@@ -79,6 +80,7 @@ class FruitDeleteById(BaseModel):
             value = int(value)
         except ValueError:
             raise HTTPException(status_code=400, detail="The <id> field should be a integer")
+        return value
 
 
 class FruitDeleteByTitle(BaseModel):
@@ -128,3 +130,4 @@ class FruitPartialUpdateById(FruitPartialUpdateBase):
             value = int(value)
         except ValueError:
             raise HTTPException(status_code=400, detail="The <id> field should be a integer")
+        return value

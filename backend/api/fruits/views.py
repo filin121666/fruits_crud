@@ -16,6 +16,7 @@ from core.config import settings
 from services.fruits import FruitsService
 from .dependencies import fruits_service
 
+
 router = APIRouter(
     prefix=settings.api.prefix.fruits_prefix,
     tags=["Fruits"],

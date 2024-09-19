@@ -4,9 +4,7 @@ from api import router
 from core.config import settings
 from utils.create_fastapi_app import create_app
 
-app = create_app(
-    create_custom_doc_urls=settings.api.create_custom_doc_urls,
-)
+app = create_app()
 
 app.include_router(router=router)
 
